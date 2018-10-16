@@ -1,0 +1,8 @@
+ $('#aa').accordion('add',{
+      title: 'Base',
+      content: 'sss'
+    });
+±¨´í£ºannot read property 'options' of undefined
+
+
+

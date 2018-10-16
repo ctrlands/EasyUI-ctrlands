@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>EasyUI Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="css/themes/default/easyui.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="css/themes/icon.css" />
+</head>
+<body class="easyui-layout" >
+  <!-- EasyUI 导航栏-->
+  <div id="js_navigation" region="west" data-options="title: '插件', spilt: true" style="width: 150px;">
+    <div data-options="fit: true" id="js_accordion" class="easyui-accordion">
+      <ul id="js_tree" class="easyui-tree">
+        <li>
+            <span>Base</span>
+            <ul>
+                <li><span>parser</span></li>
+                <li><span>easyloader</span></li>
+                <li><span>draggable</span></li>
+                <li><span>droppable</span></li>
+                <li><span>resizeable</span></li>
+                <li><span>pagination</span></li>
+                <li><span>searchbox</span></li>
+                <li><span>progressbar</span></li>
+                <li><span>tooltip</span></li>
+                <li><span>mobile</span></li>
+            </ul>
+        </li>
+        <li>
+            <span>Layout</span>
+            <ul>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+        <li>
+            <span>Menu and Button</span>
+            <ul>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+        <li>
+            <span>Form</span>
+            <ul>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+        <li>
+            <span>Window</span>
+            <ul>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+        <li>
+            <span>DataGrid and Tree</span>
+            <ul>
+                <li><span>File 2</span></li>
+                <li><span>File 3</span></li>
+            </ul>
+        </li>
+      </ul>
+      <!-- <div data-options="title: 'Base'">
+      </div>
+      <div data-options="title: 'Form'">
+      </div> -->
+    </div>
+    
+  </div>
+
+  
+  
+
+  <div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div>
+  <div data-options="region:'south',title:'South Title',split:true" style="height:100px;"></div>
+  <div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>
+  <div data-options="region:'west',title:'West',split:true" style="width:100px;"></div>
+  <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+    <!-- <div class="easyui-tabs" id="js_easy_tabs">
+      <div data-options="title: 'easyui-linkbutton', closable: true">
+          <h3>easyui-linkbutton</h3>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-add'">添加</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-edit'">编辑</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-remove'">删除</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-save'">保存</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-ok'">确定</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-no'">否定</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'">取消</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-man'">用户</a>
+          <a class="easyui-linkbutton" data-options="iconCls: 'icon-cut'">剪切</a>
+      </div>
+    </div> -->
+  </div>
+
+      
+  
+
+  
+
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.easyui.min.js"></script>
+  <script src="js/jquery.easyui.mobile.js"></script>
+  <script src="js/easyloader.js"></script>
+  <script>
+    // easyui插件配置属性
+  
+
+    // 通过jq添加tabs
+    // $("#js_easy_tabs").tabs('add', {
+    //   title: 'add tabs by jq',
+    //   content: 'this tab has been added by jquery',
+    //   closeable: true,
+    //   tools: [{
+    //     iconCls: 'icon-mini-refresh',
+    //     handler: function () {
+    //       alert('refresh');
+    //     }
+    //   }, {
+    //       iconCls: 'icon-add',
+    //       handler: function () {
+    //         alert('add');
+    //       }
+    //     }
+    //   ],
+    //   onSelect: function () {
+    //     // alert(this.title + 'is selected');
+    //   }
+    // });
+  </script>
+</body>
+</html>
