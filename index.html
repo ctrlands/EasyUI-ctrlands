@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,81 +8,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="css/themes/default/easyui.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="css/themes/icon.css" />
+  <style>
+    /* 左侧导航栏icon */
+    .icon_tree_0 {
+      background: url('img/icon/basic.png') no-repeat;
+    }
+
+    .icon_tree_1 {
+      background: url('img/icon/layout.png') no-repeat;
+    }
+
+    .icon_tree_2 {
+      background: url('img/icon/menu.png') no-repeat;
+    }
+
+    .icon_tree_3 {
+      background: url('img/icon/form.png') no-repeat;
+    }
+
+    .icon_tree_4 {
+      background: url('img/icon/window.png') no-repeat;
+    }
+
+    .icon_tree_5 {
+      background: url('img/icon/grid.png') no-repeat;
+    }
+
+    .icon_tree_child {
+      background: url('img/icon/gears.png') no-repeat;
+    }
+
+    .tree {
+      overflow: auto;
+    }
+
+    .red {
+      color: red;
+    }
+    .s {
+      color: salmon;
+      font-size: 26px;
+    }
+  </style>
 </head>
-<body class="easyui-layout" >
-  <!-- EasyUI 导航栏-->
-  <div id="js_navigation" region="west" data-options="title: '插件', spilt: true" style="width: 150px;">
-    <div data-options="fit: true" id="js_accordion" class="easyui-accordion">
-      <ul id="js_tree" class="easyui-tree">
+
+<body class="easyui-layout">
+  <!-- EasyUI 左侧导航栏-->
+  
+  <div id="js_navigation" region="west" data-options="title: '插件', spilt: true" style="width: 250px;">
+    <div id="js_accordion" data-options="border: false" class="easyui-accordion">
+      <!-- 动态加载tree -->
+      <ul id="js_tree" class="easyui-tree tree">
+      </ul>
+      <!-- 手动添加tree -->
+      <!-- <ul id="js_tree_0" class="easyui-tree tree">
         <li>
-            <span>Base</span>
-            <ul>
-                <li><span>parser</span></li>
-                <li><span>easyloader</span></li>
-                <li><span>draggable</span></li>
-                <li><span>droppable</span></li>
-                <li><span>resizeable</span></li>
-                <li><span>pagination</span></li>
-                <li><span>searchbox</span></li>
-                <li><span>progressbar</span></li>
-                <li><span>tooltip</span></li>
-                <li><span>mobile</span></li>
-            </ul>
-        </li>
-        <li>
-            <span>Layout</span>
-            <ul>
-                <li><span>File 2</span></li>
-                <li><span>File 3</span></li>
-            </ul>
-        </li>
-        <li>
-            <span>Menu and Button</span>
-            <ul>
-                <li><span>File 2</span></li>
-                <li><span>File 3</span></li>
-            </ul>
-        </li>
-        <li>
-            <span>Form</span>
-            <ul>
-                <li><span>File 2</span></li>
-                <li><span>File 3</span></li>
-            </ul>
-        </li>
-        <li>
-            <span>Window</span>
-            <ul>
-                <li><span>File 2</span></li>
-                <li><span>File 3</span></li>
-            </ul>
-        </li>
-        <li>
-            <span>DataGrid and Tree</span>
-            <ul>
-                <li><span>File 2</span></li>
-                <li><span>File 3</span></li>
-            </ul>
+          <span>Base</span>
+          <ul>
+            <li><span>parser</span></li>
+            <li><span>easyloader</span></li>
+            <li><span>draggable</span></li>
+            <li><span>droppable</span></li>
+            <li><span>resizeable</span></li>
+            <li><span>pagination</span></li>
+            <li><span>searchbox</span></li>
+            <li><span>progressbar</span></li>
+            <li><span>tooltip</span></li>
+            <li><span>mobile</span></li>
+          </ul>
         </li>
       </ul>
-      <!-- <div data-options="title: 'Base'">
-      </div>
-      <div data-options="title: 'Form'">
-      </div> -->
+
+      <ul id="js_tree_1" class="easyui-tree tree">
+        <li>
+          <span>Layout</span>
+          <ul>
+            <li><span>panel</span></li>
+            <li><span>tabs</span></li>
+            <li><span>accordion</span></li>
+            <li><span>layout</span></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul id="js_tree_2" class="easyui-tree tree">
+        <li>
+          <span>Menu and Button</span>
+          <ul>
+            <li><span>menu</span></li>
+            <li><span>sidemenu</span></li>
+            <li><span>linkbutton</span></li>
+            <li><span>menubutton</span></li>
+            <li><span>splitbutton</span></li>
+            <li><span>switchbutton</span></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul id="js_tree_3" class="easyui-tree tree">
+        <li>
+          <span>form</span>
+          <ul>
+            <li><span>form</span></li>
+            <li><span>validatebox</span></li>
+            <li><span>textbox</span></li>
+            <li><span>passwordbox</span></li>
+            <li><span>maskedbox</span></li>
+            <li><span>combo</span></li>
+            <li><span>combobox</span></li>
+            <li><span>comcotree</span></li>
+            <li><span>combogrid</span></li>
+            <li><span>comnotreegrid</span></li>
+            <li><span>tagbox</span></li>
+            <li><span>numberbox</span></li>
+            <li><span>datebox</span></li>
+            <li><span>datetimebox</span></li>
+            <li><span>datetimespinner</span></li>
+            <li><span>calendar</span></li>
+            <li><span>spinner</span></li>
+            <li><span>numberspinner</span></li>
+            <li><span>timespinner</span></li>
+            <li><span>slider</span></li>
+            <li><span>filebox</span></li>
+            <li><span>checkbox</span></li>
+            <li><span>radionbutton</span></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul id="js_tree_4" class="easyui-tree tree">
+        <li>
+          <span>Window</span>
+          <ul>
+            <li><span>window</span></li>
+            <li><span>dialog</span></li>
+            <li><span>messager</span></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul id="js_tree_5" class="easyui-tree tree">
+        <li>
+          <span>DataGrid and Tree</span>
+          <ul>
+            <li><span>datagrid</span></li>
+            <li><span>datalist</span></li>
+            <li><span>propertygrid</span></li>
+            <li><span>tree</span></li>
+            <li><span>treegrid</span></li>
+          </ul>
+        </li>
+      </ul> -->
+      <!-- End 手动添加tree -->
     </div>
-    
   </div>
 
-  
-  
 
-  <div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div>
+
+
+  <div data-options="region:'north',title:'North Title',split:true" style="height:100px;">
+  </div>
   <div data-options="region:'south',title:'South Title',split:true" style="height:100px;"></div>
   <div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>
   <div data-options="region:'west',title:'West',split:true" style="width:100px;"></div>
-  <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
-    <!-- <div class="easyui-tabs" id="js_easy_tabs">
-      <div data-options="title: 'easyui-linkbutton', closable: true">
+  <div id="js_eui_r_center" data-options="region:'center',title:'欢迎使用EasyUI'" style="padding:5px;background:#eee;">
+    <div class="easyui-tabs" id="js_eui_tabs" data-options="border: false">
+      <!-- <div data-options="title: 'easyui-linkbutton', closable: true">
           <h3>easyui-linkbutton</h3>
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-add'">添加</a>
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-edit'">编辑</a>
@@ -92,15 +184,9 @@
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'">取消</a>
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-man'">用户</a>
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-cut'">剪切</a>
-      </div>
-    </div> -->
+      </div> -->
+    </div>
   </div>
-
-      
-  
-
-  
-
 
 
   <script src="js/jquery.min.js"></script>
@@ -108,30 +194,72 @@
   <script src="js/jquery.easyui.mobile.js"></script>
   <script src="js/easyloader.js"></script>
   <script>
+    
     // easyui插件配置属性
-  
+    $('#js_tree').tree({
+      url: 'json/easyui-tree.json',
+      method: 'get',
+      animate: true,
+      onClick: function (node) {
+        var obj_tree_index = node.id;
+        var obj_panel_title = '';
+        var obj_panel_title_sub = node.text;
+        // 获取父级tree标题
+        var obj_tree_father = $(this).tree("getParent",node.target);
+        obj_tree_father != null ? (obj_panel_title = obj_tree_father.text) : obj_panel_title_sub
 
-    // 通过jq添加tabs
-    // $("#js_easy_tabs").tabs('add', {
-    //   title: 'add tabs by jq',
-    //   content: 'this tab has been added by jquery',
-    //   closeable: true,
-    //   tools: [{
-    //     iconCls: 'icon-mini-refresh',
-    //     handler: function () {
-    //       alert('refresh');
-    //     }
-    //   }, {
-    //       iconCls: 'icon-add',
-    //       handler: function () {
-    //         alert('add');
-    //       }
-    //     }
-    //   ],
-    //   onSelect: function () {
-    //     // alert(this.title + 'is selected');
-    //   }
-    // });
+        // 获取center区域的panel
+        var obj_panel = $('body').layout('panel', 'center');
+        obj_panel.panel('setTitle', obj_panel_title + '>>' + obj_panel_title_sub);
+
+        var url = 'tab_' + node.id + '.html';
+        // center区域内容: 动态生成tabs node.attributes.url
+        addTabs (node.text, url);
+      }
+    });
+
+    function addTabs (text, url) {
+      if ($('#js_eui_tabs').tabs('exists', text)) {
+        $('#js_eui_tabs').tabs('select', text)
+      } else {
+        var content = "<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="
+						+ url + "></iframe>";
+            $('#js_eui_tabs').tabs('add', {
+              title: text,
+              closable: true,
+              content: content
+            })
+      }
+    }
+
+
+
+
+    /* 手动添加tree，修改样式图标
+    var js_tree_count = 5;
+    for (var js_tree_index = 0; js_tree_index <= js_tree_count; js_tree_index++) {
+      $('#js_tree_' + js_tree_index).tree({
+        onLoadSuccess: function (node, data) {
+          $('#js_tree_' + js_tree_index).find('li').eq(0).find('.tree-icon').eq(0).addClass('icon_tree_' +
+            js_tree_index);
+          $('#js_tree_' + js_tree_index).find('ul').eq(0).find('li .tree-icon').addClass('icon_tree_child');
+        },
+        onClick: function (node) {
+          $("#js_eui_tabs").tabs('add', {
+            title: 'add tabs by jq',
+            border: false,
+            content: 'this tab has been added by jquery',
+            closable: true,
+            tools: [{
+            }],
+            onSelect: function () {
+              // alert(this.title + 'is selected');
+            }
+          });
+        }
+      });
+    } */
   </script>
 </body>
+
 </html>
