@@ -54,7 +54,7 @@
 
 <body class="easyui-layout">
   <!-- EasyUI 左侧导航栏-->
-  
+
   <div id="js_navigation" region="west" data-options="title: '插件', spilt: true" style="width: 250px;">
     <div id="js_accordion" data-options="border: false" class="easyui-accordion">
       <!-- 动态加载tree -->
@@ -186,6 +186,9 @@
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-cut'">剪切</a>
       </div> -->
     </div>
+
+    <table id="js_eui_datagrid" class="easyui-datagrid">
+    </table>
   </div>
 
 
@@ -193,8 +196,69 @@
   <script src="js/jquery.easyui.min.js"></script>
   <script src="js/jquery.easyui.mobile.js"></script>
   <script src="js/easyloader.js"></script>
+  <script type="text/javascript" src="js/plugins/datagrid-defaultview.js"></script>
+  <script src="http://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
+  
+
   <script>
-    
+    /* datagrid 行内编辑 */
+    $.extend($.fn.datagrid.methods, {
+      editCell: function (jq, param) {
+        return jq.each(function () {
+          var opts = $(this).datagrid('options');
+          var fields = $(this).datagrid('getColumnFields', true).concat($(this).datagrid('getColumnFields'));
+          for (var i = 0; i < fields.length; i++) {
+            var col = $(this).datagrid('getColumnOption', fields[i]);
+            col.editor1 = col.editor;
+            if (fields[i] != param.field) {
+              col.editor = null;
+            }
+          }
+          $(this).datagrid('beginEdit', param.index);
+          var ed = $(this).datagrid('getEditor', param);
+          if (ed) {
+            if ($(ed.target).hasClass('textbox-f')) {
+              $(ed.target).textbox('textbox').focus();
+            } else {
+              $(ed.target).focus();
+            }
+          }
+          for (var i = 0; i < fields.length; i++) {
+            var col = $(this).datagrid('getColumnOption', fields[i]);
+            col.editor = col.editor1;
+          }
+        });
+      }
+    });
+
+    var editIndex = undefined;
+
+    function endEditing() {
+      if (editIndex == undefined) {
+        return true;
+      }
+      if ($('#js_eui_datagrid').datagrid('validateRow', editIndex)) {
+        $('#js_eui_datagrid').datagrid('endEdit', editIndex);
+        editIndex = undefined;
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function onClickCell(index, field) {
+      if (endEditing()) {
+        $('#js_eui_datagrid').datagrid('selectRow', index)
+          .datagrid('editCell', {
+            index: index,
+            field: field
+          })
+        editIndex = index;
+      }
+    }
+
+    /* End datagrid 行内编辑 */
+
     // easyui插件配置属性
     $('#js_tree').tree({
       url: 'json/easyui-tree.json',
@@ -205,7 +269,7 @@
         var obj_panel_title = '';
         var obj_panel_title_sub = node.text;
         // 获取父级tree标题
-        var obj_tree_father = $(this).tree("getParent",node.target);
+        var obj_tree_father = $(this).tree("getParent", node.target);
         obj_tree_father != null ? (obj_panel_title = obj_tree_father.text) : obj_panel_title_sub
 
         // 获取center区域的panel
@@ -214,23 +278,160 @@
 
         var url = 'tab_' + node.id + '.html';
         // center区域内容: 动态生成tabs node.attributes.url
-        addTabs (node.text, url);
+        addTabs(node.text, url);
       }
     });
 
-    function addTabs (text, url) {
+    function addTabs(text, url) {
       if ($('#js_eui_tabs').tabs('exists', text)) {
         $('#js_eui_tabs').tabs('select', text)
       } else {
-        var content = "<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="
-						+ url + "></iframe>";
-            $('#js_eui_tabs').tabs('add', {
-              title: text,
-              closable: true,
-              content: content
-            })
+        var content = "<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src=" +
+          url + "></iframe>";
+        $('#js_eui_tabs').tabs('add', {
+          title: text,
+          closable: true,
+          content: content
+        })
       }
     }
+
+    $('#js_eui_datagrid').datagrid({
+      title: 'easyui-datagrid',
+      border: false,
+      method: 'get',
+      url: 'json/easyui-datagrid.json',
+      columns: [
+        [{
+            // 选择框
+            field: 'ck',
+            checkbox: true
+          },
+          {
+            field: 'code',
+            title: 'Code',
+            width: '25%',
+            sortable: true,
+            formatter: formatCode, // 符合条件 样式等修改
+            editor: 'text' // 行内编辑
+          },
+          {
+            field: 'name',
+            title: 'Name',
+            width: '25%',
+            sortable: true,
+            editor: 'text'
+          },
+          {
+            field: 'price',
+            title: 'Price',
+            width: '25%',
+            sortable: true,
+            editor: 'text'
+          },
+          {
+            field: 'rest',
+            title: 'Rest',
+            width: '25%',
+            sortable: true,
+            editor: 'numberbox'
+          }
+        ]
+      ],
+      rownumbers: true,
+      pagination: true,
+      singleSelect: true,
+      // checkOnSelect: true,
+      // multiSort: true,
+      sortable: true,
+      remoteSort: false, // 是否允许从服务器排序
+      toolbar: [{
+          'iconCls': 'icon-remove',
+          handler: function () {
+            /* datagrid获取选中单行的数据 getSelected
+                       获取所有选中行的数据 getEslections
+             */
+            var obj_rowdataCode = [];
+            var obj_rowdata = $('#js_eui_datagrid').datagrid('getSelections');
+            if (obj_rowdata) {
+              for (var i = 0; i < obj_rowdata.length; i++) {
+                obj_rowdataCode.push(obj_rowdata[i].code);
+              }
+              console.log(obj_rowdataCode);
+            } else {
+              console.log('null')
+            }
+          }
+        }, '-',
+        {
+          'iconCls': 'icon-add',
+          handler: function () {
+            alert("add-dosome code here");
+          }
+        }
+      ],
+      // 设置符合条件的行数据样式等
+      rowStyler: function (index, row) {
+        if (row.rest == '200') {
+          return 'background-color: #6293bb; color: #fff; font-wight: bold;';
+        }
+      },
+      // 添加自定义方法, 继承$.fn.datagrid.methods
+      onClickCell: onClickCell,
+
+      view: detailview,
+      detailFormatter: function (index, row) {
+        // return '<div class="ddv" style="padding: 5px 0;"><table id="ddv-' + index + '"></table></div>';
+        return '<div class="ddv" style="padding: 5px 0;"><table class="easyui-datagrid" id="js_eui_th-datagrid"></table></div>';
+      },
+      // 多级grid数据
+      onExpandRow: onExpandRow,
+    });
+    //数据发生变化时执行刷新 $('js_eui_datagrid').datagrid('reload');
+
+    // 符合条件 样式等修改
+    function formatCode(val, row) {
+      if (val == 'C_1') {
+        return '<span style="color: red;">' + val + '</span>';
+      } else {
+        return val;
+      }
+    }
+    // 多级grid数据 function
+    function onExpandRow(index, row) {
+      $('#js_eui_th-datagrid').datagrid({
+        url: 'json/easyui-second-datagrid.json',
+        fitColumns: true,
+        singleSelect: false,
+        height: 'auto',
+        columns: [
+          [
+            {
+              "field": "th-code",
+              "title": "Th-Code"
+            },
+            {
+              "field": "th-rest",
+              "title": "Th-Rest"
+            },
+            {
+              "field": "th-price",
+              "title": "Th-Price"
+            }
+          ]
+        ],
+        onResize: function () {
+          $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
+        },
+        onLoadSuccess: function () {
+          setTimeout(function () {
+            $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
+          },0);
+        }
+      });
+      $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
+    }
+
 
 
 

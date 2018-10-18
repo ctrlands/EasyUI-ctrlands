@@ -1,0 +1,17 @@
+[
+  {
+    "th-code": "th-100",
+    "th-rest": "th-rest-100",
+    "th-price": "100"
+  },
+  {
+    "th-code": "th-200",
+    "th-rest": "th-rest-200",
+    "th-price": "200"
+  },
+  {
+    "th-code": "th-300",
+    "th-rest": "th-rest-300",
+    "th-price": "300"
+  }
+]
