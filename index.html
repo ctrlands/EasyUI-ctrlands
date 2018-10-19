@@ -9,6 +9,9 @@
   <link rel="stylesheet" type="text/css" media="screen" href="css/themes/default/easyui.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="css/themes/icon.css" />
   <style>
+    a {
+      text-decoration: none;
+    }
     /* 左侧导航栏icon */
     .icon_tree_0 {
       background: url('img/icon/basic.png') no-repeat;
@@ -186,6 +189,49 @@
           <a class="easyui-linkbutton" data-options="iconCls: 'icon-cut'">剪切</a>
       </div> -->
     </div>
+    <div id="js_eui_dialogs" class="easyui-dialog" data-options="
+    title: 'dialog title',
+    width: 400,
+    height: 200,
+    resizeable: true,
+    closed: true,
+    buttons: '#bb'">
+      <form id="ff" method="post">
+        <div>
+          <label for="name">Name:</label>
+          <input class="easyui-validatebox" type="text" name="name" data-options="required:true" />
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input class="easyui-validatebox" type="text" name="email" data-options="validType:'email'" />
+        </div>
+      </form>
+
+      <!-- 组合框 combobox 二级联动?-->
+      <div style="margin-top: 15px;">
+        <input id="js_eui_combobox" name="dept" value="choose one value" style="width: 200px; height: 30px;">
+        <input id="js_eui_combobox_sec" name="sec" value="second value" style="width: 200px; height: 30px;">
+      </div>
+
+      <!-- 搜索框 -->
+      <div style="margin-top: 10px;">
+        <input id="js_eui_searchbox">
+        <div id="js_eui_searchbox_menu" style="width: 120px;">
+          <div data-options="name: 'all', iconCls: 'icon-ok'">ok</div>
+          <div data-options="name: 'sports'">sports</div>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- 按钮组 -->
+    <div id="bb">
+      <a href="#" class="easyui-linkbutton" onclick="dia_save()">Save</a>
+      <a href="#" class="easyui-linkbutton">Close</a>
+    </div>
+
+
+
 
     <table id="js_eui_datagrid" class="easyui-datagrid">
     </table>
@@ -198,7 +244,7 @@
   <script src="js/easyloader.js"></script>
   <script type="text/javascript" src="js/plugins/datagrid-defaultview.js"></script>
   <script src="http://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
-  
+
 
   <script>
     /* datagrid 行内编辑 */
@@ -310,31 +356,37 @@
           {
             field: 'code',
             title: 'Code',
-            width: '25%',
+            width: '20%',
             sortable: true,
             formatter: formatCode, // 符合条件 样式等修改
-            editor: 'text' // 行内编辑
+            // editor: 'text' // 行内编辑
           },
           {
             field: 'name',
             title: 'Name',
-            width: '25%',
+            width: '20%',
             sortable: true,
             editor: 'text'
           },
           {
             field: 'price',
             title: 'Price',
-            width: '25%',
+            width: '20%',
             sortable: true,
             editor: 'text'
           },
           {
             field: 'rest',
             title: 'Rest',
-            width: '25%',
+            width: '20%',
             sortable: true,
             editor: 'numberbox'
+          },
+          {
+            field: '_operate',
+            width: '20%',
+            formatter: formatterFun,
+            title: '操作'
           }
         ]
       ],
@@ -382,14 +434,17 @@
       view: detailview,
       detailFormatter: function (index, row) {
         // return '<div class="ddv" style="padding: 5px 0;"><table id="ddv-' + index + '"></table></div>';
-        return '<div class="ddv" style="padding: 5px 0;"><table class="easyui-datagrid" id="js_eui_th-datagrid"></table></div>';
+        return '<div class="ddv" style="padding: 5px 0;"><table class="easyui-datagrid" id="js_eui_th-datagrid-' +
+          index + '"></table></div>';
       },
       // 多级grid数据
       onExpandRow: onExpandRow,
-    });
-    //数据发生变化时执行刷新 $('js_eui_datagrid').datagrid('reload');
 
-    // 符合条件 样式等修改
+
+    });
+    //数据发生变化时执行刷新 $('#js_eui_datagrid').datagrid('reload');
+
+    // 符合条件 行样式等修改
     function formatCode(val, row) {
       if (val == 'C_1') {
         return '<span style="color: red;">' + val + '</span>';
@@ -399,14 +454,14 @@
     }
     // 多级grid数据 function
     function onExpandRow(index, row) {
-      $('#js_eui_th-datagrid').datagrid({
+      $('#js_eui_th-datagrid-' + index).datagrid({
         url: 'json/easyui-second-datagrid.json',
+        method: 'get',
         fitColumns: true,
         singleSelect: false,
         height: 'auto',
         columns: [
-          [
-            {
+          [{
               "field": "th-code",
               "title": "Th-Code"
             },
@@ -420,17 +475,100 @@
             }
           ]
         ],
+        /* onExpandRow: function (index, row) {
+          var ddv = $(this).datagrid('getRowDetail', index).find('table .div');
+        }, */
+        onLoad: function () {
+          $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
+          $('#js_eui_datagrid').datagrid('selectRow', index);
+          $('#js_eui_datagrid').datagrid('getRowDetail', index).find('form').form('load', row);
+          $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
+          $('#js_eui_datagrid').datagrid('fixRowHeight', index);
+        },
         onResize: function () {
           $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
         },
         onLoadSuccess: function () {
+          $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
           setTimeout(function () {
-            $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
-          },0);
+            var tr = $('#js_eui_th-datagrid-' + index).closest('tr');
+            var id = tr.prev().attr('id');
+            id = id.replace(/-2-(\d+)$/, '-1-$1');
+            $('#' + id).next().css('height', tr.height());
+          }, 0);
         }
       });
       $('#js_eui_datagrid').datagrid('fixDetailRowHeight', index);
     }
+
+    // 在列表右侧添加 按钮
+    function formatterFun(value, row, index) {
+      return [
+        '<a href="javascript:;" onclick="showUpdate(' + index + ')">',
+        '<img src="icons/edit_add.png"/>',
+        '添加<span>&nbsp;&nbsp;</span></a>',
+        '<a href="javascript:;" onclick="addCompatible(' + row.rest + ')">修改</a>' + '<span>&nbsp;&nbsp;</span>',
+        '<a href="javascript:;" onclick="destory(' + row.rest + ')">刪除</a>' + '<span>&nbsp;&nbsp;</span>'
+      ].join("&nbsp;");;
+    }
+
+    function showUpdate(index) {
+      // console.log('update: ' + index);
+      $("#js_eui_dialogs").dialog("open");
+    }
+
+    function addCompatible(index) {
+      alert('addCompatible: ' + index);
+    }
+
+    function destory(indexs) {
+      alert('destory: ' + indexs);
+    }
+
+    /* 弹窗 */
+    // $('#js_eui_dialog').dialog('refresh', 'new_content.php');
+    function dia_save() {
+      var obj_v_combobox = $('#js_eui_combobox').combobox('getText');
+      // $('#js_eui_combobox').combobox('getValue');
+      console.log(obj_v_combobox);
+    }
+
+    /* 组合框 commobox */
+    $('#js_eui_combobox').combobox({
+      url: 'json/combobox_data1.json',
+      method: 'get',
+      valueField: 'id',
+      textField: 'text',
+      onSelect: function (rec) {
+        var url = 'json/combobox_data2.json';
+        // $('#js_eui_combobox_sec').combobox('reload', url);
+        $('#js_eui_combobox_sec').combobox({
+          url: url,
+          method: 'get',
+          valueField: 'id',
+          textField: 'desc'
+        }).combobox('clear');
+        var value = $(this).combobox('getValue');
+        $('#js_eui_combobox_sec').combobox('select', value);
+      },
+      onLoadSuccess: function () {
+        /* var value = $(this).combobox('getValue');
+        $('#js_eui_combobox_sec').combobox('select', value); */
+      }
+    });
+
+    /* 搜索框 searchbox */
+    $('#js_eui_searchbox').searchbox({
+      searcher: function (val, name) {
+        alert(val + ',' + name);
+      },
+      menu: '#js_eui_searchbox_menu',
+      prompt: 'please input value'
+    });
+
+
+
+
 
 
 
